@@ -1,0 +1,5 @@
+﻿docker run --rm -it -v ${PWD}:C:\api -p 8080:80 microsoft/aspnetcore:2
+docker run --rm -it -v ${PWD}:/api -p 8080:80 microsoft/aspnetcore-build  #(linux)
+
+dotnet SampleApi.Web.dll
+
