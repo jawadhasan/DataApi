@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SampleApi.Data;
+using SampleApi.Web.Helpers;
 
 namespace SampleApi.Web
 {
@@ -26,16 +22,16 @@ namespace SampleApi.Web
         {
 
             services.AddCors();
-            //services.AddDbContext<AppDbContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase("InMemoryDb");
-            //});
-            //services.AddScoped<DbSeeder>();
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseInMemoryDatabase("InMemoryDb");
+            });
+            services.AddScoped<DbSeeder>();
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbSeeder dbseeder)
         {
             app.UseCors(builder =>
             {
@@ -56,6 +52,8 @@ namespace SampleApi.Web
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc();
+
+            dbseeder.SeedAsync(app.ApplicationServices).Wait();
         }
     }
 }
