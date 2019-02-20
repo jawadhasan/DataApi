@@ -37,5 +37,4 @@ namespace SampleApi.Web.Infrastructure
       return new Envelop(errorMessage);
     }
   }
-
 }

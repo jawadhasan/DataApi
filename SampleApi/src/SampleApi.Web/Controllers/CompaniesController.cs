@@ -42,10 +42,7 @@ namespace SampleApi.Web.Controllers
     {
       try
       {
-
-        var result = await _db.Companies
-          .FirstOrDefaultAsync(c => c.Id == id);
-
+        var result = await _db.Companies.FirstOrDefaultAsync(c => c.Id == id);
         return Ok(result);
       }
       catch (Exception e)
@@ -98,8 +95,6 @@ namespace SampleApi.Web.Controllers
           _db.Companies.Remove(removableCompany);
           await _db.SaveChangesAsync();
         }
-
-
         return Ok();
       }
       catch (Exception e)
