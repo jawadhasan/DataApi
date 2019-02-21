@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,8 @@ using SampleApi.Data;
 
 namespace SampleApi.Web.Controllers
 {
+
+  [Authorize]
   [Route("api/[controller]")]
   public class CompaniesController : BaseController
   {

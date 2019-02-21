@@ -6,8 +6,7 @@ using SampleApi.Web.Models;
 
 namespace SampleApi.Web.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/Coffee")]
+    [Route("api/[controller]")]
     public class CoffeeController : Controller
     {
       private readonly IHubContext<CoffeeHub> _coffeeHub;
@@ -17,7 +16,7 @@ namespace SampleApi.Web.Controllers
       }
 
       [HttpPost]
-      public async Task<IActionResult> OrderCoffee([FromBody]Order order)
+      public async Task<IActionResult> Post([FromBody]Order order)
       {
         await _coffeeHub.Clients.All.SendAsync("NewOrder", order);
         //Save order somewhere and get order id

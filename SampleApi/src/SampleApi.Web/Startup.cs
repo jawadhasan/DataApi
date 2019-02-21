@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using SampleApi.Data;
 using SampleApi.Web.Helpers;
 using SampleApi.Web.Hubs;
+using SampleApi.Web.Services.User;
 
 namespace SampleApi.Web
 {
@@ -39,12 +44,41 @@ namespace SampleApi.Web
                 options.UseInMemoryDatabase("InMemoryDb");
             });
             services.AddScoped<DbSeeder>();
-            services.AddMvc();
+           
 
             services.AddSingleton(new Random());
             services.AddSingleton<OrderChecker>();
             services.AddHttpContextAccessor();
             services.AddSignalR();
+
+            //local users
+            var users = new Dictionary<string, string> {{"test", "test123"}, {"admin", "admin123"}};
+            services.AddSingleton<IUserService>(new BasicUserService(users));
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }).AddJwtBearer(config =>
+            {
+                config.RequireHttpsMetadata = false;
+                config.SaveToken = true;
+                config.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(InMemoryConfig.SecretKey)),
+                    ValidIssuer = InMemoryConfig.Issuer,
+                    ValidAudience = InMemoryConfig.Audience,
+
+                    //ValidateIssuer = true,
+                    //ValidateAudience = true,
+                    //ValidateLifetime = true,
+                    //ValidateIssuerSigningKey = true
+
+                };
+            });
+
+
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +102,7 @@ namespace SampleApi.Web
                 routes.MapHub<CoffeeHub>("/coffeeHub");
             });
 
+            app.UseAuthentication();
             app.UseMvc();
 
             dbseeder.SeedAsync(app.ApplicationServices).Wait();
