@@ -13,9 +13,4 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\SampleApi.Core\SampleApi.Core.csproj" />
-    <ProjectReference Include="..\..\src\SampleApi.Web\SampleApi.Web.csproj" />
-  </ItemGroup>
-
 </Project>
