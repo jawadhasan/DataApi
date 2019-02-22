@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+
 using SampleApi.Data;
 using SampleApi.Web.Helpers;
 using SampleApi.Web.Hubs;
@@ -50,6 +51,7 @@ namespace SampleApi.Web
             services.AddSingleton<OrderChecker>();
             services.AddHttpContextAccessor();
             services.AddSignalR();
+
 
             //local users
             var users = new Dictionary<string, string> {{"test", "test123"}, {"admin", "admin123"}};
