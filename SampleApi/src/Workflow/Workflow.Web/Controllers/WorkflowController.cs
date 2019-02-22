@@ -21,7 +21,22 @@ namespace Workflow.Web.Controllers
       _logger = logger;
     }
 
-    [HttpGet("{id}")]
+      [HttpGet]
+      public async Task<IActionResult> Get()
+      {
+          try
+          {
+              var workflows = await _workflowDataService.GetWorkflows();
+              return Ok(workflows);
+          }
+          catch (Exception e)
+          {
+              _logger.LogError(e.Message);
+              return BadRequest(e.Message);
+          }
+      }
+
+        [HttpGet("{id}")]
     public async Task<IActionResult> Get(string id)
     {
       try

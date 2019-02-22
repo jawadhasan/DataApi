@@ -1,0 +1,52 @@
+
+# This can be used to run a production version of the Angular and Node containers
+# See the readme.md for details on changes that are required in the Angular service
+
+# Run docker-compose -f docker-compose.prod.yml build
+# Run docker-compose up
+# Live long and prosper
+
+version: '3.1'
+
+services:
+
+  nginx:
+    container_name: fw-nginx-angular
+    image: fw-nginx-angular
+    build:
+      context: .
+      dockerfile: nginx.prod.dockerfile
+    ports:
+      - "8060:80"  
+    networks:
+      - app-network
+
+  sampleapi:
+    container_name: dotnetcore-sampleapi
+    image: dotnetcore-sampleapi
+    build:
+      context: .
+      dockerfile: dotnetcore.prod.dockerfile
+    ports:
+      - "8080:80"
+      - "443:443"
+    #depends_on: 
+     # - node
+    networks:
+      - app-network
+
+  workflowapi:
+    container_name: dotnetcore-workflowapi
+    image: dotnetcore-workflowapi
+    build:
+      context: .
+      dockerfile: dotnetcore.workflow.prod.dockerfile   
+    ports:
+      - "8090:80"
+    networks:
+      - app-network    
+
+
+networks:
+  app-network:
+    driver: bridge

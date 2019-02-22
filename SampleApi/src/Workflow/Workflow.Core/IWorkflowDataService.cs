@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Workflow.Core.Data;
 
 namespace Workflow.Core
 {
     public interface IWorkflowDataService
     {
+        Task<List<BaseWorkflow>> GetWorkflows();
         Task<BaseWorkflow> GetWorkflowByRequestId(string requestId);
         Task SaveWorkflowAsync(BaseWorkflow workflow);
 

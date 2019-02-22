@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,23 @@ namespace Workflow.Data.DataClass
         public WorkflowDataService(WorkflowDbContext db)
         {
             _db = db;
+        }
+
+        public async Task<List<BaseWorkflow>> GetWorkflows()
+        {
+
+            var applicationWorkflows = new List<BaseWorkflow>();
+
+            var workflows = await _db.UserWorkflows
+                .Include(wf=> wf.Steps)
+                .ToListAsync();
+
+            foreach (var userWorkflow in workflows)
+            {
+                var appWorkflow = new ApplicationWorkflow(userWorkflow);
+                applicationWorkflows.Add(appWorkflow);
+            }
+            return applicationWorkflows;
         }
 
         public async Task<BaseWorkflow> GetWorkflowByRequestId(string requestId)
