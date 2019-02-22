@@ -34,8 +34,9 @@ namespace SampleApi.Web
                 builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    //.AllowAnyOrigin()
-                    .WithOrigins("http://localhost:4200") //https://trailheadtechnology.com/breaking-change-in-aspnetcore-2-2-for-signalr-and-cors/
+                      //.AllowAnyOrigin()
+                      //.WithOrigins("http://localhost:4200") //https://trailheadtechnology.com/breaking-change-in-aspnetcore-2-2-for-signalr-and-cors/
+                    .WithOrigins("http://localhost:8060") //https://trailheadtechnology.com/breaking-change-in-aspnetcore-2-2-for-signalr-and-cors/
                     .AllowCredentials();
             }));
 

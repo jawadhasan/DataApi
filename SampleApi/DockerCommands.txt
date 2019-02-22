@@ -3,3 +3,19 @@ docker run --rm -it -v ${PWD}:/api -p 8080:80 microsoft/aspnetcore-build  #(linu
 
 dotnet SampleApi.Web.dll
 
+
+docker build -t fw-nginx-angular -f nginx.prod.dockerfile .
+docker run -d -p 8060:80 fw-nginx-angular
+
+
+docker build -t dotnetcore-sampleapi -f dotnetcore.prod.dockerfile .
+docker run -d -p 8080:80 dotnetcore-sampleapi
+
+docker build -t dotnetcore-workflowapi -f dotnetcore.workflow.prod.dockerfile .
+docker run -d -p 8090:80 dotnetcore-workflowapi
+
+
+
+
+docker build -t jitpaydev/fw-nginx-angular -f nginx.prod.
+dockerfile .
